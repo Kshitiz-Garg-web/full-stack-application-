@@ -130,6 +130,6 @@ export class service {
   }
 }
 
-const service = new service()
+const appwriteService = new service()
 
-export default service;
+export default appwriteService;
