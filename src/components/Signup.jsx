@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Logo, Button, Input } from './index'
 
+
+function Signup() {
 const [error, setError] = useState("")
 const dispatch = useDispatch()
 const { register, handleSubmit } = useForm()
@@ -17,17 +19,20 @@ const create = async (data) => {
     if (seassion) {
       const userData = await authAervice.getCurrentUser()
       if (userData) {
-        dispatch(authLogin(userData))
+        dispatch(authLogin({userData}))
         navigate('/')
       }
     }
   } catch (error) {
     console.log('Signup :: error :: ', error)
-    setError(error.message)
+    if (error.message !== null) {
+      setError(error.message)
+    } else {
+      setError("get error during signup")
+    }
   }
 }
 
-function Signup() {
   return (
     <div>
       <div>

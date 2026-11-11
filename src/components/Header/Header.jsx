@@ -6,7 +6,7 @@ import { logout } from '../../store/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
-  const authStatus = useSelector((state) => state.reducer.status)
+  const authStatus = useSelector((state) => state.auth.status)
   // const naviagte = useNavigate()
   const navItems = [
     {

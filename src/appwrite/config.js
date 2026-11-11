@@ -123,10 +123,15 @@ export class service {
   }
 
   getFilePreview(fileId) {
-    return this.bucket.getFilePreview(
+    const get = this.bucket.getFileView(
       conf.appwriteBucketId,
       fileId
     )
+    console.log('-------------------')
+    console.log(get)
+    console.log('-------------------')
+
+    return get
   }
 }
 

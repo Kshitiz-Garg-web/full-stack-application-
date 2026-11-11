@@ -13,7 +13,7 @@ function LogoutBtn() {
     })
   }
   return (
-    <button>LogoutBtn</button>
+    <button onClick={logoutHandler}>LogoutBtn</button>
   )
 }
 

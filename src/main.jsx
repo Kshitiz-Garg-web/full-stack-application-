@@ -8,6 +8,10 @@ import Signup from './components/Signup.jsx'
 import AllPosts from './pages/AllPosts.jsx'
 import AddPost from './pages/AddPost.jsx'
 import EditPost from './pages/EditPost.jsx'
+import Post from './pages/Post.jsx'
+import Login from './components/Login.jsx'
+import Home from './pages/Home.jsx'
+import AuthLayout from './components/AuthLayout.jsx'
 
 const router = createBrowserRouter([
   {
@@ -21,41 +25,42 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: (
-          <Authenticat Authenticat={false}>
+          <AuthLayout authentication={false}>
             <Login />
-          </Authenticat>
+          </AuthLayout>
         )
       },
       {
         path: '/signup',
         element: (
-          <Authenticat Authenticat={false}>
+          <AuthLayout authentication={false}>
             <Signup />
-          </Authenticat>
+          </AuthLayout>
         )
       },
       {
         path: '/all-posts',
         element: (
-          <Authenticat Authenticat={true}>
+          <AuthLayout authentication={true}>
             <AllPosts />
-          </Authenticat>
+          </AuthLayout>
         )
       },
       {
         path: '/add-post',
         element: (
-          <Authenticat Authenticat={true}>
+          <AuthLayout authentication={true}>
+            
             <AddPost />
-          </Authenticat>
+          </AuthLayout>
         )
       },
       {
         path: '/edit-post/:slug',
         element: (
-          <Authenticat Authenticat={true}>
+          <AuthLayout authentication={true}>
             <EditPost />
-          </Authenticat>
+          </AuthLayout>
         )
       },
       {

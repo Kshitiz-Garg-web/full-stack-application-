@@ -5,6 +5,7 @@ import conf from './conf/conf.js'
 import authAervice from "../src/appwrite/auth.js"
 import { login, logout } from './store/authSlice.js'
 import { Footer, Header } from './components/index.js'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
@@ -36,8 +37,7 @@ function App() {
       <div>
         <Header />
         <main>
-          {/* <Outlet/> */}
-          <h1>yes user we have</h1>
+          <Outlet/>
         </main>
         <Footer />
       </div>

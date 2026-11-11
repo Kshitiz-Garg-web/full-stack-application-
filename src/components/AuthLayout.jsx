@@ -6,7 +6,7 @@ function AuthLayout({
   children,
   authentication = true
 }) {
-  const authStatus = useSelector((state) => state.auth.status)
+  const authStatus = useSelector(state => state.auth.status)
   const navigate = useNavigate()
   const [loader, setLoader] = useState(true)
 
@@ -16,6 +16,7 @@ function AuthLayout({
     } else if (!authentication && authStatus !== authentication) {
       navigate('/')
     }
+    setLoader(false)
   }, [authStatus, navigate, authentication])
 
   return (
