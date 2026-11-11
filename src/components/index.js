@@ -6,6 +6,11 @@ import Logo from './Logo'
 import Button from './Button'
 import Input from './Input'
 import RTE from './RTE'
+import Signup from './Signup'
+import Login from './Login'
+import Post from './Post'
+import PostForm from './PostForm.jsx/PostForm'
+import PostCard from './PostCard'
 
 export {
   Header,
@@ -15,6 +20,9 @@ export {
   Logo,
   Button,
   Input,
-  RTE
-
+  RTE,
+  Signup,
+  Login,
+  PostForm,
+  PostCard
 }
