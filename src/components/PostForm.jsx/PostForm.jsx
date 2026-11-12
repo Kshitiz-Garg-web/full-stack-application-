@@ -11,7 +11,7 @@ function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, getValues, control } = useForm({
     defaultValues: {
       title: post?.title || "",
-      slug: post?.slug || "",
+      slug: post?.$id || "",
       content: post?.content || "",
       status: post?.status || "active"
     }
@@ -20,12 +20,12 @@ function PostForm({ post }) {
   const userData = useSelector(state => state.auth.userData)
   const submit = async (data) => {
     if (post) {
-      const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+      const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
       if (file) {
         appwriteService.deleteFile(PostForm.featuredImage)
       }
-      const dbPost = appwriteService.updatePost(post.$id, {
+      const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
         featuredImage: file ? file.$id : undefined
       })
@@ -110,6 +110,7 @@ function PostForm({ post }) {
           label="Slug :"
           placeholder="Slug"
           className=""
+          readOnly
           {...register("slug", { required: true })}
           onInput={(e) => {
             setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
