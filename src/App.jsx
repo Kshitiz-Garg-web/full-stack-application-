@@ -1,48 +1,55 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-
-import conf from './conf/conf.js'
-import authAervice from "../src/appwrite/auth.js"
-import { login, logout } from './store/authSlice.js'
-import { Footer, Header } from './components/index.js'
 import { Outlet } from 'react-router-dom'
 
-function App() {
+import authAervice from '../src/appwrite/auth.js'
+import { Footer, Header } from './components/index.js'
+import { login, logout } from './store/authSlice.js'
 
+function App() {
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
 
-  const fetchInfo = async () => {
+  const fetchInfo = useCallback(async () => {
     try {
       const userData = await authAervice.getCurrentUser()
       if (userData) {
-        // console.log('1--------')
         dispatch(login({ userData }))
-        setLoading(false)
       } else {
-        // console.log('2--------')
         dispatch(logout())
       }
     } catch (error) {
-      // console.log('3--------')
       console.log('app.js :: error :: ', error)
+      dispatch(logout())
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
+  }, [dispatch])
+
+  useEffect(() => {
+    fetchInfo()
+  }, [fetchInfo])
+
+  if (loading) {
+    return (
+      <div className="page-shell">
+        <div className="container page-loading">
+          <div className="skeleton" style={{ height: '4rem', width: '12rem', marginBottom: '1rem' }} />
+          <div className="skeleton" style={{ height: '22rem', borderRadius: '1.25rem' }} />
+        </div>
+      </div>
+    )
   }
 
-
-  useEffect(() => { fetchInfo() }, [])
-  return !loading ? (
-    <div>
-      <div>
-        <Header />
-        <main>
-          <Outlet/>
-        </main>
-        <Footer />
-      </div>
+  return (
+    <div className="app-shell">
+      <Header />
+      <main className="page-shell">
+        <Outlet />
+      </main>
+      <Footer />
     </div>
-  ) : <h1>"Loading"</h1>
+  )
 }
 
 export default App

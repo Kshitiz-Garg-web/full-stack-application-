@@ -1,9 +1,9 @@
-import React from 'react'
-
-function Logo({ width = '100px',
- }) {
+function Logo({ width = '100px' }) {
   return (
-    <span>Logo</span>
+    <div className="brand" style={{ width }}>
+      <span className="brand__mark">M</span>
+      <span className="brand__text">MyBlog</span>
+    </div>
   )
 }
 

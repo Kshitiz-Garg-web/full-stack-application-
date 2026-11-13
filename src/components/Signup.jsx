@@ -1,88 +1,76 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+
 import authAervice from '../appwrite/auth'
 import { login as authLogin } from '../store/authSlice'
-import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
 import { Logo, Button, Input } from './index'
 
-
 function Signup() {
-const [error, setError] = useState("")
-const dispatch = useDispatch()
-const { register, handleSubmit } = useForm()
-const navigate = useNavigate()
-const create = async (data) => {
-  setError("")
-  try {
-    const seassion = await authAervice.createAccount(data)
-    if (seassion) {
-      const userData = await authAervice.getCurrentUser()
-      if (userData) {
-        dispatch(authLogin({userData}))
-        navigate('/')
+  const [error, setError] = useState('')
+  const dispatch = useDispatch()
+  const { register, handleSubmit } = useForm()
+  const navigate = useNavigate()
+
+  const create = async (data) => {
+    setError('')
+    try {
+      const seassion = await authAervice.createAccount(data)
+      if (seassion) {
+        const userData = await authAervice.getCurrentUser()
+        if (userData) {
+          dispatch(authLogin({ userData }))
+          navigate('/')
+        }
       }
-    }
-  } catch (error) {
-    console.log('Signup :: error :: ', error)
-    if (error.message !== null) {
-      setError(error.message)
-    } else {
-      setError("get error during signup")
+    } catch (error) {
+      console.log('Signup :: error :: ', error)
+      setError(error.message || 'get error during signup')
     }
   }
-}
 
   return (
-    <div>
-      <div>
-        <Logo />
-      </div>
-      <div>
-        <h2>Sign in to your account</h2>
-        <p>D'not have any account?&nbsp;
-          <a href="/signup">Sign up</a>
-        </p>
-        {error && <p>{error}</p>}
-        <form onSubmit={handleSubmit(create)}>
+    <div className="auth-layout">
+      <div className="auth-card">
+        <div className="auth-card__header">
+          <Logo width="160px" />
+        </div>
+
+        <div className="auth-card__body">
           <div>
-            <Input
-              label='Name : '
-              type="name"
-              className=""
-              placeholder='Enter Your Full Name'
-              {...register("name", {
-                required: true
-              })}
-            />
-            <Input
-              label='Email : '
-              type="email"
-              className=""
-              placeholder='Enter Your Email'
-              {...register("email", {
-                required: true
-              })}
-            />
-            <Input
-              label='Password : '
-              type="password"
-              className=""
-              placeholder='Enter Your Password'
-              {...register("password", {
-                required: true
-              })}
-            />
-            <Button
-              type='submit'
-            >
-              Sign in
-            </Button>
+            <h2 className="page-heading page-heading--center">Create account</h2>
+            <p className="auth-copy">
+              Already have an account? <Link to="/login" className="auth-link">Log in</Link>
+            </p>
           </div>
-        </form>
+
+          {error && <p className="form-error">{error}</p>}
+
+          <form onSubmit={handleSubmit(create)} className="field-stack">
+            <Input
+              label="Name"
+              type="text"
+              placeholder="Enter your full name"
+              {...register('name', { required: true })}
+            />
+            <Input
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              {...register('email', { required: true })}
+            />
+            <Input
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              {...register('password', { required: true })}
+            />
+            <Button type="submit">Sign up</Button>
+          </form>
+        </div>
       </div>
     </div>
-
   )
 }
 

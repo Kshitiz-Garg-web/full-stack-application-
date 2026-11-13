@@ -1,13 +1,21 @@
-import React from 'react'
-
 function Button({
   children,
   type = 'button',
-  className = "",
+  className = '',
+  bgColor = '',
+  variant = 'primary',
   ...props
 }) {
+  const variantClass = variant === 'secondary'
+    ? 'btn btn-secondary'
+    : variant === 'danger'
+      ? 'btn btn-danger'
+      : 'btn btn-primary'
+
+  const classes = [variantClass, bgColor, className].filter(Boolean).join(' ')
+
   return (
-    <button className={`${className}`} {...props}>
+    <button type={type} className={classes} {...props}>
       {children}
     </button>
   )

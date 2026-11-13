@@ -1,41 +1,79 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+
 import appwriteService from '../appwrite/config'
 import { Container, PostCard } from './../components/index'
 
 function Home() {
-
   const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
-    appwriteService.getPosts().then((posts) => {
-      if (posts) {
-        setPosts(posts.documents)
-        console.log(posts)
+    let isMounted = true
+
+    appwriteService.getPosts().then((postsResponse) => {
+      if (isMounted && postsResponse) {
+        setPosts(postsResponse.documents)
+      }
+    }).finally(() => {
+      if (isMounted) {
+        setLoading(false)
       }
     })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
-  if (posts.length === 0) {
+  if (loading) {
     return (
-      <div>
-        <Container >
-          <div>
-            <p1>No cards Available Right Now...</p1>
+      <div className="page-section">
+        <Container>
+          <div className="page-header">
+            <h1 className="page-heading">Latest posts</h1>
+          </div>
+          <div className="post-list-grid">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="post-card-skeleton">
+                <div className="skeleton post-card-skeleton__image" />
+                <div className="skeleton post-card-skeleton__line post-card-skeleton__line--lg" />
+                <div className="skeleton post-card-skeleton__line" />
+                <div className="skeleton post-card-skeleton__line post-card-skeleton__line--sm" />
+              </div>
+            ))}
           </div>
         </Container>
       </div>
     )
   }
+
+  if (posts.length === 0) {
+    return (
+      <div className="page-section">
+        <Container>
+          <div className="empty-state">
+            <h2 className="page-heading">Login Required</h2>
+            <p className="page-subtitle">Please log in to explore and view published blog posts.</p>
+          </div>
+        </Container>
+      </div>
+    )
+  }
+
   return (
-    <div>
+    <div className="page-section">
       <Container>
-        <div>
-          {posts.map((post) => {
-            return (
-              <div key={post.$id}>
-                <PostCard {...post} />
-              </div>
-            )
-          })}
+        <div className="page-header">
+          <div>
+            <h1 className="page-heading">Latest posts</h1>
+            <p className="page-subtitle">Fresh stories, ideas, and insights from the community.</p>
+          </div>
+        </div>
+
+        <div className="post-list-grid">
+          {posts.map((post) => (
+            <PostCard key={post.$id} {...post} />
+          ))}
         </div>
       </Container>
     </div>

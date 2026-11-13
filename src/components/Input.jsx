@@ -1,27 +1,30 @@
-import React, { useId } from 'react'
+import { forwardRef, useId } from 'react'
 
-const Input = React.forwardRef(function Input({
+const Input = forwardRef(function Input({
   label,
   type = 'text',
-  className = "",
+  className = '',
   ...props
 }, ref) {
   const id = useId()
+  const inputClassName = ['field-input', className].filter(Boolean).join(' ')
+
   return (
-    <div className=''>
-      {label && <label
-        className=''
-        htmlFor={id}>
-      </label>
-      }
+    <div className="field-group">
+      {label && (
+        <label className="field-label" htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         type={type}
-        className={`{className}`}
-        ref={ref} // yhi wo chij h jo apna parent component ma refrence degi , isi porpuse k lya forwardref use kya h hmna input ider h or ui kao orr h , ui s ref p[ass kerga or ider accept hoga or state k access user pricde kerga or ager n hua to fr kider onchane , handler sab elga 
+        className={inputClassName}
+        ref={ref}
         {...props}
         id={id}
       />
     </div>
   )
 })
+
 export default Input
